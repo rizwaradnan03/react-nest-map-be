@@ -1,0 +1,41 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model city {
+  id        String @id @default(uuid())
+  name      String
+  latitude  String
+  longitude String
+
+  place place[]
+}
+
+model type_of_place {
+  id   String @id @default(uuid())
+  name String
+
+  place place[]
+}
+
+model place {
+  id              String         @id @default(uuid())
+  name            String
+  description     String
+  
+  city            city?          @relation(fields: [cityId], references: [id])
+  cityId          String?
+  type_of_place   type_of_place? @relation(fields: [type_of_placeId], references: [id])
+  type_of_placeId String?
+
+  latitude  String
+  longitude String
+}
