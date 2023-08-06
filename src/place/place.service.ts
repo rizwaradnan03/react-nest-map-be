@@ -6,8 +6,8 @@ import { place } from '@prisma/client';
 export class PlaceService {
     constructor(private prismaService: PrismaService) { }
 
-    async findView(): Promise<place[]>{
-        return this.prismaService.$queryRawUnsafe(`SELECT place.name as name, place.description as description, type_of_place.name as type_of_place, place.latitude as latitude, place.longitude as longitude FROM place INNER JOIN type_of_place ON type_of_place.id = place.type_of_placeId`)
+    async findView(cityId: string, type_of_placeId: string): Promise<place[]>{
+        return this.prismaService.$queryRawUnsafe(`SELECT "place"."name" as name, "place"."description" as description, "type_of_place"."name" as type_of_place, "place"."latitude" as latitude, "place"."longitude" as longitude FROM place INNER JOIN type_of_place ON "type_of_place"."id" = "place"."type_of_placeId" WHERE "place"."type_of_placeId" = '${type_of_placeId}' AND "place"."cityId" = '${cityId}'`)
     }
 
     async findAll(): Promise<place[]> {
